@@ -25,8 +25,12 @@ public class Knight extends ChessPieceBase implements ChessPiece {
         if ((dx == 1 && dy == 2) || (dx == 2 && dy == 1)) {
             // Check if there's a piece at the destination
             ChessPiece pieceAtDestination = chessboard.getPieceAt(destination);
+            if (pieceAtDestination != null && pieceAtDestination.getType() == PieceType.KING && pieceAtDestination.getColor() != getColor()) {
+                return false; // Knight cannot capture the opponent's king
+            }
             return pieceAtDestination == null || pieceAtDestination.getColor() != getColor(); // Knight can move to the destination if there's no piece or if it's an opponent's piece
         }
         return false; // Knight cannot move to the destination
     }
+
 }

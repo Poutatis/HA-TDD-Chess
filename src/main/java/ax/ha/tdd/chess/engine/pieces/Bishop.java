@@ -37,8 +37,13 @@ public class Bishop extends ChessPieceBase implements ChessPiece {
             y += yDirection;
         }
 
-        // Check if the destination square is empty or contains an opponent's piece
+        // Check if the destination square contains the opponent's king
         ChessPiece pieceAtDestination = chessboard.getPieceAt(destination);
+        if (pieceAtDestination != null && pieceAtDestination.getType() == PieceType.KING && pieceAtDestination.getColor() != getColor()) {
+            return false; // Bishop cannot capture the opponent's king
+        }
+
         return pieceAtDestination == null || pieceAtDestination.getColor() != getColor();
     }
+
 }

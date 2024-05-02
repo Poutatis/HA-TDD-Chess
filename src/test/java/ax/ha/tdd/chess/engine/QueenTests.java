@@ -104,9 +104,13 @@ public class QueenTests {
         System.out.println("Chessboard after move:");
         System.out.println(new ChessboardWriter().print(chessboard));
 
+        // Act
+        boolean canMove = queen.canMove(chessboard, new Square("d8"));
+
         // Assert
-        assertFalse(queen.canMove(chessboard, new Square("d8"))); // Cannot capture own piece
+        assertFalse(canMove); // Cannot capture own piece
     }
+
 
 
 }

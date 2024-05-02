@@ -20,6 +20,13 @@ public class Pawn extends ChessPieceBase implements ChessPiece{
         // Determine the direction in which the pawn should move based on its color
         int direction = (getColor() == Color.WHITE) ? -1 : 1;
 
+        // Check if the move is capturing the opponent's king
+        if (Math.abs(destX - currentX) == 1 && destY == currentY + direction) {
+            ChessPiece pieceAtDestination = chessboard.getPieceAt(destination);
+            if (pieceAtDestination != null && pieceAtDestination.getType() == PieceType.KING && pieceAtDestination.getColor() != getColor()) {
+                return false; // Pawn cannot capture the opponent's king
+            }
+        }
 
         ChessPiece blockingPiece = chessboard.getPieceAt(destination);
 
@@ -36,5 +43,6 @@ public class Pawn extends ChessPieceBase implements ChessPiece{
         return destX == currentX && destY == currentY + direction && blockingPiece == null ||
                 Math.abs(destX - currentX) == 1 && destY == currentY + direction && blockingPiece != null && blockingPiece.getColor() != getColor();
     }
+
 
 }

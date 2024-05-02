@@ -17,41 +17,22 @@ public class Queen extends ChessPieceBase implements ChessPiece {
         int destX = destination.getX();
         int destY = destination.getY();
 
-        // Check if the destination is on a diagonal path
+        // Check if the destination is on a diagonal path, horizontal, or vertical path
         int dx = Math.abs(destX - currentX);
         int dy = Math.abs(destY - currentY);
-        if ((dx != 0 && dy != 0) && (dx != dy)) {
-            return false; // Queen can move either horizontally, vertically, or diagonally
+        if ((dx != 0 && dy != 0) && (dx != dy) && (dx != 0 || dy != 0)) {
+            return false; // Queen can only move horizontally, vertically, or diagonally
         }
 
         // Check if there's any piece blocking the path
-        if (dx == 0 || dy == 0) { // Horizontal or vertical movement (like Rook)
-            if (dx == 0) { // Vertical movement
-                int yDirection = (destY > currentY) ? 1 : -1;
-                int y = currentY + yDirection;
-                while (y != destY) {
-                    if (chessboard.getPieceAt(new Square(currentX, y)) != null) {
-                        return false; // Queen cannot jump over pieces
-                    }
-                    y += yDirection;
-                }
-            } else { // Horizontal movement
-                int xDirection = (destX > currentX) ? 1 : -1;
-                int x = currentX + xDirection;
-                while (x != destX) {
-                    if (chessboard.getPieceAt(new Square(x, currentY)) != null) {
-                        return false; // Queen cannot jump over pieces
-                    }
-                    x += xDirection;
-                }
-            }
-        } else { // Diagonal movement (like Bishop)
-            int xDirection = (destX > currentX) ? 1 : -1;
-            int yDirection = (destY > currentY) ? 1 : -1;
+        if (dx == 0 || dy == 0 || dx == dy) { // Horizontal, vertical, or diagonal movement
+            int xDirection = Integer.compare(destX, currentX);
+            int yDirection = Integer.compare(destY, currentY);
             int x = currentX + xDirection;
             int y = currentY + yDirection;
-            while (x != destX && y != destY) {
-                if (chessboard.getPieceAt(new Square(x, y)) != null) {
+            while (x != destX || y != destY) {
+                ChessPiece pieceAtSquare = chessboard.getPieceAt(new Square(x, y));
+                if (pieceAtSquare != null) {
                     return false; // Queen cannot jump over pieces
                 }
                 x += xDirection;
@@ -59,8 +40,10 @@ public class Queen extends ChessPieceBase implements ChessPiece {
             }
         }
 
-        // Check if the destination square is empty or contains an opponent's piece
+        // Check if the destination square is empty or contains an opponent's piece that is not a king
         ChessPiece pieceAtDestination = chessboard.getPieceAt(destination);
-        return pieceAtDestination == null || pieceAtDestination.getColor() != getColor();
+        return pieceAtDestination == null ||
+                (pieceAtDestination.getColor() != getColor() && pieceAtDestination.getType() != PieceType.KING);
     }
+
 }

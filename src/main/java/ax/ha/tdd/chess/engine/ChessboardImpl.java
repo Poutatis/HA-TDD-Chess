@@ -32,6 +32,19 @@ public class ChessboardImpl implements Chessboard {
         board[chessPiece.getLocation().getY()][chessPiece.getLocation().getX()] = chessPiece;
     }
 
+    public boolean isSquareUnderThreat(Square square, Color opponentColor) {
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
+                ChessPiece piece = getPieceAt(new Square(x, y));
+                if (piece != null && piece.getColor() == opponentColor && piece.canMove(this, square)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
     @Override
     public void removePieceAt(Square square) {
         board[square.getY()][square.getX()] = null;

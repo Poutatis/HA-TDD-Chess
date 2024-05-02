@@ -27,18 +27,21 @@ public class Rook extends ChessPieceBase implements ChessPiece{
             int y = currentY + dy;
 
             while (x != destX || y != destY) {
-                if (chessboard.getPieceAt(new Square(x, y)) != null) {
+                ChessPiece pieceAtSquare = chessboard.getPieceAt(new Square(x, y));
+                if (pieceAtSquare != null) {
                     return false; // There is a piece blocking the rook's path
                 }
                 x += dx;
                 y += dy;
             }
 
-            // Check if the destination square is occupied by an opponent's piece
+            // Check if the destination square is occupied by an opponent's piece that is not a king
             ChessPiece pieceAtDestination = chessboard.getPieceAt(destination);
-            return pieceAtDestination == null || pieceAtDestination.getColor() != getColor();
+            return pieceAtDestination == null ||
+                    (pieceAtDestination.getColor() != getColor() && pieceAtDestination.getType() != PieceType.KING);
         }
 
         return false; // Rook cannot move diagonally
     }
+
 }

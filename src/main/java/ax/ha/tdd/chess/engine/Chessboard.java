@@ -9,4 +9,7 @@ public interface Chessboard extends Iterable<ChessPiece[]>{
     void addPiece(final ChessPiece chessPiece);
 
     void removePieceAt(final Square square);
+
+    public boolean isSquareUnderThreat(Square square, Color opponentColor);
+
 }
