@@ -3,6 +3,7 @@ package ax.ha.tdd.chess.engine;
 import ax.ha.tdd.chess.console.ChessboardWriter;
 import ax.ha.tdd.chess.engine.pieces.Bishop;
 import ax.ha.tdd.chess.engine.pieces.ChessPiece;
+import ax.ha.tdd.chess.engine.pieces.King;
 import ax.ha.tdd.chess.engine.pieces.Pawn;
 import org.junit.jupiter.api.Test;
 
@@ -97,4 +98,19 @@ public class BishopTests {
         assertFalse(bishop.canMove(chessboard, new Square("d2"))); // Attempting to capture own piece
     }
 
+    @Test
+    public void testCaptureKing() {
+        // Arrange
+        Chessboard chessboard = new ChessboardImpl();
+        King king = new King(Color.BLACK, new Square("e8"));
+        Bishop bishop = new Bishop(Color.WHITE, new Square("a4")); // Bishop attempting to capture the king
+        chessboard.addPiece(king);
+        chessboard.addPiece(bishop);
+
+        System.out.println("Chessboard before move:");
+        System.out.println(new ChessboardWriter().print(chessboard));
+
+        // Assert
+        assertFalse(bishop.canMove(chessboard, new Square("e8"))); // Bishop cannot capture the king
+    }
 }

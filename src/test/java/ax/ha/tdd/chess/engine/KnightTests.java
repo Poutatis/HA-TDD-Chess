@@ -2,6 +2,7 @@ package ax.ha.tdd.chess.engine;
 
 import ax.ha.tdd.chess.console.ChessboardWriter;
 import ax.ha.tdd.chess.engine.pieces.ChessPiece;
+import ax.ha.tdd.chess.engine.pieces.King;
 import ax.ha.tdd.chess.engine.pieces.Knight;
 import ax.ha.tdd.chess.engine.pieces.Pawn;
 import org.junit.jupiter.api.Test;
@@ -94,5 +95,19 @@ public class KnightTests {
         System.out.println(new ChessboardWriter().print(chessboard));
     }
 
+    @Test
+    public void testCaptureKing() {
+        // Arrange
+        Chessboard chessboard = new ChessboardImpl();
+        King king = new King(Color.BLACK, new Square("e8"));
+        Knight knight = new Knight(Color.WHITE, new Square("d6")); // Knight attempting to capture the king
+        chessboard.addPiece(king);
+        chessboard.addPiece(knight);
 
+        System.out.println("Chessboard before move:");
+        System.out.println(new ChessboardWriter().print(chessboard));
+
+        // Assert
+        assertFalse(knight.canMove(chessboard, new Square("e8"))); // Knight cannot capture the king
+    }
 }

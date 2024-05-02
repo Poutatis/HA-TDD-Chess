@@ -2,6 +2,7 @@ package ax.ha.tdd.chess.engine;
 
 import ax.ha.tdd.chess.console.ChessboardWriter;
 import ax.ha.tdd.chess.engine.pieces.ChessPiece;
+import ax.ha.tdd.chess.engine.pieces.King;
 import ax.ha.tdd.chess.engine.pieces.Pawn;
 import ax.ha.tdd.chess.engine.pieces.Rook;
 import org.junit.jupiter.api.Test;
@@ -119,7 +120,6 @@ public class RookTests {
         ChessPiece friendlyPawn = new Pawn(Color.WHITE, new Square("a2"));
         chessboard.addPiece(friendlyPawn);
 
-        // Print chessboard state before move
         System.out.println("Chessboard before move:");
         System.out.println(new ChessboardWriter().print(chessboard));
 
@@ -128,6 +128,22 @@ public class RookTests {
 
         System.out.println("Chessboard after move:");
         System.out.println(new ChessboardWriter().print(chessboard));
+    }
+
+    @Test
+    public void testCaptureKing() {
+        // Arrange
+        Chessboard chessboard = new ChessboardImpl();
+        King king = new King(Color.BLACK, new Square("e8"));
+        Rook rook = new Rook(Color.WHITE, new Square("e1")); // Rook attempting to capture the king
+        chessboard.addPiece(king);
+        chessboard.addPiece(rook);
+
+        System.out.println("Chessboard before move:");
+        System.out.println(new ChessboardWriter().print(chessboard));
+
+        // Assert
+        assertFalse(rook.canMove(chessboard, new Square("e8"))); // Rook cannot capture the king
     }
 
 }

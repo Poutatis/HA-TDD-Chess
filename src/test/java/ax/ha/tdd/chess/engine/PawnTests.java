@@ -104,4 +104,20 @@ public class PawnTests {
         System.out.println("Chessboard after move:");
         System.out.println(new ChessboardWriter().print(chessboard));
     }
+
+    @Test
+    public void testCaptureKing() {
+        // Arrange
+        Chessboard chessboard = new ChessboardImpl();
+        King king = new King(Color.BLACK, new Square("d8"));
+        Pawn pawn = new Pawn(Color.WHITE, new Square("d7")); // Pawn attempting to capture the king
+        chessboard.addPiece(king);
+        chessboard.addPiece(pawn);
+
+        System.out.println("Chessboard before move:");
+        System.out.println(new ChessboardWriter().print(chessboard));
+
+        // Assert
+        assertFalse(pawn.canMove(chessboard, new Square("d8"))); // Pawn cannot capture the king
+    }
 }

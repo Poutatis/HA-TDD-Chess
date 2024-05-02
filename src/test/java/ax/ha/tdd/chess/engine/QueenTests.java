@@ -101,7 +101,7 @@ public class QueenTests {
         Pawn friendlyPawn = new Pawn(Color.WHITE, new Square("d8")); // Friendly piece
         chessboard.addPiece(friendlyPawn);
 
-        System.out.println("Chessboard after move:");
+        System.out.println("Chessboard before move:");
         System.out.println(new ChessboardWriter().print(chessboard));
 
         // Act
@@ -111,6 +111,20 @@ public class QueenTests {
         assertFalse(canMove); // Cannot capture own piece
     }
 
+    @Test
+    public void testCaptureKing() {
+        // Arrange
+        Chessboard chessboard = new ChessboardImpl();
+        King king = new King(Color.BLACK, new Square("e8"));
+        Queen queen = new Queen(Color.WHITE, new Square("e1")); // Queen attempting to capture the king
+        chessboard.addPiece(king);
+        chessboard.addPiece(queen);
 
+        System.out.println("Chessboard before move:");
+        System.out.println(new ChessboardWriter().print(chessboard));
+
+        // Assert
+        assertFalse(queen.canMove(chessboard, new Square("e8"))); // Queen cannot capture the king
+    }
 
 }
