@@ -1,28 +1,107 @@
 package ax.ha.tdd.chess.engine;
 
 import ax.ha.tdd.chess.console.ChessboardWriter;
-import ax.ha.tdd.chess.engine.pieces.ChessPiece;
-import ax.ha.tdd.chess.engine.pieces.Pawn;
-import ax.ha.tdd.chess.engine.pieces.PieceType;
-import org.junit.jupiter.api.Test;
+import ax.ha.tdd.chess.engine.pieces.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PawnTests {
 
     @Test
     public void testMovePawnBackwardsShouldBeIllegal() {
-        //Arrange
+        // Arrange
+        Chessboard chessboard = new ChessboardImpl();
+        Pawn pawn = new Pawn(Color.WHITE, new Square("a2"));
+        chessboard.addPiece(pawn);
+
+        System.out.println("Chessboard before move:");
+        System.out.println(new ChessboardWriter().print(chessboard));
+
+        // Assert
+        assertFalse(pawn.canMove(chessboard, new Square("a1")));
+
+        System.out.println("Chessboard after move:");
+        System.out.println(new ChessboardWriter().print(chessboard));
+    }
+
+    @Test
+    public void testPawnForwardMovementFirstMove() {
+        // Arrange
+        Chessboard chessboard = new ChessboardImpl();
+        Pawn pawn = new Pawn(Color.WHITE, new Square("a2"));
+        chessboard.addPiece(pawn);
+
+        System.out.println("Chessboard before move:");
+        System.out.println(new ChessboardWriter().print(chessboard));
+
+        // Assert
+        assertTrue(pawn.canMove(chessboard, new Square("a4")));
+
+        chessboard.removePieceAt(new Square("a2"));
+        pawn = new Pawn(Color.WHITE, new Square("a4"));
+        chessboard.addPiece(pawn);
+
+        System.out.println("Chessboard after move:");
+        System.out.println(new ChessboardWriter().print(chessboard));
+    }
+
+    @Test
+    public void testPawnForwardMovementSubsequentMove() {
+        // Arrange
+        Chessboard chessboard = new ChessboardImpl();
+        Pawn pawn = new Pawn(Color.WHITE, new Square("a4"));
+        chessboard.addPiece(pawn);
+
+        System.out.println("Chessboard before move:");
+        System.out.println(new ChessboardWriter().print(chessboard));
+
+        // Assert
+        assertTrue(pawn.canMove(chessboard, new Square("a5")));
+
+        chessboard.removePieceAt(new Square("a4"));
+        pawn = new Pawn(Color.WHITE, new Square("a5"));
+        chessboard.addPiece(pawn);
+
+        System.out.println("Chessboard after move:");
+        System.out.println(new ChessboardWriter().print(chessboard));
+    }
+
+    @Test
+    public void testPawnDiagonalCapture() {
+        // Arrange
+        Chessboard chessboard = new ChessboardImpl();
+        Pawn pawn = new Pawn(Color.WHITE, new Square("a2"));
+        chessboard.addPiece(pawn);
+        ChessPiece opponentPiece = new Pawn(Color.BLACK, new Square("b3"));
+        chessboard.addPiece(opponentPiece);
+
+        System.out.println("Chessboard before move:");
+        System.out.println(new ChessboardWriter().print(chessboard));
+
+        // Assert
+        assertTrue(pawn.canMove(chessboard, new Square("b3")));
+
+        System.out.println("Chessboard after move:");
+        chessboard.removePieceAt(new Square("b3"));
+        chessboard.removePieceAt(new Square("a2"));
+        pawn = new Pawn(Color.WHITE, new Square("b3"));
+        chessboard.addPiece(pawn);
+        System.out.println(new ChessboardWriter().print(chessboard));
+    }
+
+    @Test
+    public void testPawnBlockedMove() {
+        // Arrange
         Chessboard chessboard = new ChessboardImpl();
         Pawn pawn = new Pawn(Color.WHITE, new Square("e2"));
         chessboard.addPiece(pawn);
+        ChessPiece blockingPiece = new Pawn(Color.BLACK, new Square("e3"));
+        chessboard.addPiece(blockingPiece);
 
-        //Assert
-        assertFalse(pawn.canMove(chessboard, new Square("e1")));
-
-        //For debugging, you can print the board to console, or if you want
-        //to implement a command line interface for the game
+        // Assert
+        assertFalse(pawn.canMove(chessboard, new Square("e3")));
+        System.out.println("Chessboard after move:");
         System.out.println(new ChessboardWriter().print(chessboard));
     }
 }
