@@ -10,6 +10,6 @@ public interface Chessboard extends Iterable<ChessPiece[]>{
 
     void removePieceAt(final Square square);
 
-    public boolean isSquareUnderThreat(Square square, Color opponentColor);
+    boolean isSquareUnderThreat(Square square, Color opponentColor);
 
 }

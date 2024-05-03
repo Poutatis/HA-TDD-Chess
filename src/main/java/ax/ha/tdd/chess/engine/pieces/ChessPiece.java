@@ -24,9 +24,12 @@ public interface ChessPiece {
      * On what square is this piece?
      */
     Square getLocation();
-
     /**
      * Can the piece move to the destination square on this chessboard?
      */
     boolean canMove(Chessboard chessboard, Square destination);
+    /**
+     * Moves the piece to new Square
+     */
+    void movePiece(Square newSquare);
 }
