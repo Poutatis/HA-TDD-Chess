@@ -58,6 +58,13 @@ public class GameImpl implements Game{
             return;
         }
 
+        // Check if it's the correct player's turn to move
+        Color currentPlayerColor = getPlayerToMove();
+        if (currentPiece.getColor() != currentPlayerColor) {
+            lastMoveResult = "It's not " + currentPiece.getColor() + "'s turn to move";
+            return;
+        }
+
         // Check if the piece can move to the destination square
         if (!currentPiece.canMove(board, destination)) {
             lastMoveResult = "Illegal move: " + move;
@@ -78,4 +85,5 @@ public class GameImpl implements Game{
         // Update the game state
         isNewGame = false;
     }
+
 }
